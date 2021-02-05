@@ -1,7 +1,7 @@
 from flask import render_template, session, redirect, request, url_for, flash
-
-from shop import app, db 
+from shop import app,db
 from .forms import RegistrationForm
+
 
 @app.route('/')
 def home():
@@ -17,4 +17,4 @@ def register():
     #     db_session.add(user)
         flash('Thanks for registering')
         return redirect(url_for('login'))
-    return render_template('register.html', form=form, title="Registation page")
+    return render_template('admin/register.html', form=form, title="Registration page")
