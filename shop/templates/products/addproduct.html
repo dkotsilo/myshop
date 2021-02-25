@@ -23,7 +23,7 @@
         <select name="brand" id="brand" class="form-control" required>
             <option value="">Select a brand</option>
             {% for brand in brands %}
-            <option value="brand.id">{{brand.name}}</option>
+            <option value="{{brand.id}}">{{brand.name}}</option>
             {% endfor %}
         </select>
 
@@ -31,7 +31,7 @@
         <select name="category" id="category" class="form-control" required>
             <option value="">Select a category</option>
             {% for category in categories %}
-            <option value="category.id">{{category.name}}</option>
+            <option value="{{category.id}}">{{category.name}}</option>
             {% endfor %}
         </select>
         {{ render_field(form.colors, class="form-control", placeholder="Add product colors") }}

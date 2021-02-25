@@ -3,7 +3,6 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_uploads import IMAGES, UploadSet, configure_uploads, patch_request_class
 import os
-import secrets
 
 
 basedir = os.path.abspath(os.path.dirname(__file__))

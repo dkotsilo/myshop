@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for, flash, request
+from flask import render_template, redirect, url_for, flash, request, session
 from shop import db, app, photos
 from .models import Brand, Category, Addproduct
 from .forms import Addproducts
@@ -6,6 +6,9 @@ import secrets
 
 @app.route('/addbrand', methods=['GET','POST'])
 def addbrand():
+    if 'email' not in session:
+        flash('Please login first', 'danger')
+        return redirect(url_for('login'))
     if request.method == "POST":
         getbrand = request.form.get('brand')
         brand = Brand(name=getbrand)
@@ -20,6 +23,9 @@ def addbrand():
 
 @app.route('/addcat', methods=['GET','POST'])
 def addcat():
+    if 'email' not in session:
+        flash('Please login first', 'danger')
+        return redirect(url_for('login'))
     if request.method == "POST":
         getcat = request.form.get('category')
         brand = Category(name=getcat)
@@ -32,6 +38,9 @@ def addcat():
 
 @app.route('/addproduct', methods=['GET','POST'])
 def addproduct():
+    if 'email' not in session:
+        flash('Please login first', 'danger')
+        return redirect(url_for('login'))
     brands = Brand.query.all()
     categories = Category.query.all()
     form = Addproducts(request.form)
@@ -51,5 +60,6 @@ def addproduct():
                              brand_id=brand, category_id=category, image_1=image_1, image_2=image_2, image_3=image_3)
         db.session.add(addpro)
         flash(f'The product {name} has been added to your database', 'success')
+        db.session.commit()
         return redirect(url_for('addproduct'))
     return render_template('products/addproduct.html', title='Add Product page', form=form, brands=brands, categories=categories)
