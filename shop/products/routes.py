@@ -20,7 +20,7 @@ def addbrand():
     return render_template('products/addbrand.html', brands='brands')
 
 
-@app.route('/updatebrand/<int:id>',methods=['GET','POST'])
+@app.route('/updatebrand/<int:id>', methods=['GET', 'POST'])
 def updatebrand(id):
     if 'email' not in session:
         flash('Login first please', 'danger')
@@ -35,7 +35,21 @@ def updatebrand(id):
     brand = updatebrand.name
     return render_template('products/updatebrand.html', title='Update brand', updatebrand=updatebrand)
 
-@app.route('/addcat', methods=['GET','POST'])
+
+@app.route('/deletebrand/<int:id>', methods=['GET', 'POST'])
+def deletebrand(id):
+    brand = Brand.query.get_or_404(id)
+    if request.method == "POST":
+        db.session.delete(brand)
+        db.session.commit()
+        flash(f'The brand {brand.name} was deleted from your database', 'success')
+        return redirect(url_for('admin'))
+    flash(f'The brand {brand.name} cant be deleted from your database', 'warning')
+    return redirect(url_for('admin'))
+
+
+
+@app.route('/addcat', methods=['GET', 'POST'])
 def addcat():
     if 'email' not in session:
         flash('Please login first', 'danger')
@@ -50,20 +64,20 @@ def addcat():
     return render_template('products/addbrand.html')
 
 
-@app.route('/updatecat/<int:id>',methods=['GET','POST'])
+@app.route('/updatecat/<int:id>', methods=['GET','POST'])
 def updatecat(id):
     if 'email' not in session:
         flash('Login first please', 'danger')
         return redirect(url_for('login'))
     updatecat = Category.query.get_or_404(id)
-    brand = request.form.get('category')
+    category = request.form.get('category')
     if request.method == "POST":
-        updatecat.name = updatecat
-        flash(f'Your category has been updated', 'success')
+        updatecat.name = category
+        flash(f'The category {updatecat.name} was changed to {category}','success')
         db.session.commit()
         return redirect(url_for('category'))
-    brand = updatecat.name
-    return render_template('products/addproduct.html', title='Update category page', updatecat=updatecat)
+    category = updatecat.name
+    return render_template('products/updatebrand.html', title='Update category page', updatecat=updatecat)
 
 
 
@@ -137,3 +151,50 @@ def updateproduct(id):
     form.description.data = product.desc
     return render_template('products/updateproduct.html', form=form,  brands=brands, categories=categories, product=product)
 
+
+
+@app.route('/deletecategory/<int:id>', methods=['GET', 'POST'])
+def deletecategory(id):
+    category = Category.query.get_or_404(id)
+    if request.method == "POST":
+        db.session.delete(category)
+        db.session.commit()
+        flash(f'The brand {category.name} was deleted from your database', 'success')
+        return redirect(url_for('admin'))
+    flash(f'The brand {category.name} cant be deleted from your database', 'warning')
+    return redirect(url_for('admin'))
+
+
+
+
+# @app.route('/updateproduct/<int:id>', methods=['GET','POST'])
+# def updateproduct(id):
+#     brands = Brand.query.all()
+#     categories = Category.query.all()
+#     product = Addproduct.query.get_or_404(id)
+#     brand = request.form.get('brand')
+#     category = request.form.get('category')
+#     form = Addproducts(request.form)
+#     if request.method == "POST":
+#         product.name = form.name.data
+#         product.price = form.price.data
+#         product.discount = form.discount.data
+#         product.brand_id = brand
+#         product.category_id = category
+#         product.colors = form.colors.data
+#         product.desc = form.description.data
+#         for img in range(1,4):
+#             picture = "image_" + str(img)
+#             path = "product" + "." + str(picture)
+#             os.unlink(os.path.join(current_app.root_path, "static/images/" + path))
+#             path = photos.save(request.files.get(picture), name=secrets.token_hex(10) + ".")
+#         db.session.commit()
+#         flash(f'Yor product {product.name} has been updated', 'success')
+#         return redirect(url_for('admin'))
+#     form.name.data = product.name
+#     form.price.data = product.price
+#     form.discount.data = product.discount
+#     form.stock.data = product.stock
+#     form.colors.data = product.colors
+#     form.description.data = product.desc
+#     return render_template('products/updateproduct.html', form=form,  brands=brands, categories=categories, product=product)
