@@ -15,8 +15,7 @@ app.config['SECRET_KEY'] ='hfouewwefoquw'
 app.config['UPLOADED_PHOTOS_DEST'] = os.path.join(basedir, 'static/images')
 photos = UploadSet('photos', IMAGES)
 configure_uploads(app, photos)
-patch_request_class(app)
-
+patch_request_class(app, 32 * 1024 * 1024)
 
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
