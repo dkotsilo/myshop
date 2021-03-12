@@ -39,3 +39,10 @@ def AddCart():
         print(e)
     finally:
         return redirect(request.referrer)
+
+
+@app.route('/carts')
+def getCart():
+    if 'Shoppingcart' not in session:
+        return redirect(request.referrer)
+    return render_template('products/carts.html')

@@ -1,0 +1,40 @@
+{% extends 'layout.html' %}
+{{session['Shoppingcart']}}
+
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <table class="table table-sm">
+            <thead>
+            <th>Sr</th>
+            <th>Name</th>
+            <th>Color</th>
+            <th>Price</th>
+            <th>Discount</th>
+            <th>Subtotal</th>
+            <th>Update</th>
+            <th>Delete</th>
+            
+            </thead>
+            <tbody>
+            {% for key, product in session['Shoppingcart'].items() %}
+                <tr>
+                    <td>{{loop.index}}</td>
+                    <td>{{}}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+            {% endfor %}
+                </tr>
+            </tbody>
+        </table>
+        
+    </div>
+    
+</div>
+{% endblock content %}
