@@ -1,5 +1,6 @@
 from flask import render_template, redirect, url_for, flash, request, session, current_app
 from shop import db, app, photos
+from shop.products.routes import brands, categories
 from shop.products.models import Addproduct
 
 
@@ -42,8 +43,8 @@ def AddCart():
 
 @app.route('/carts')
 def getCart():
-    if 'Shoppingcart' not in session:
-        return redirect(request.referrer)
+    if 'Shoppingcart' not in session or len(session['Shoppingcart']) <= 0:
+        return redirect(url_for('home'))
     subtotal = 0
     grandtotal = 0
     for key, product in session['Shoppingcart'].items():
@@ -53,14 +54,60 @@ def getCart():
         tax = ("%.2f" % (.06 * float(subtotal)))
         grandtotal = float("%.2f" % (1.06 * subtotal))
 
-    return render_template('products/carts.html', tax=tax, grandtotal=grandtotal)
+    return render_template('products/carts.html', tax=tax, grandtotal=grandtotal, brands=brands(), categories=categories())
 
 
 
-@app.route('/empty')
-def empty_cart():
+@app.route('/updatecart/<int:code>', methods=['POST'])
+def updatecart(code):
+    if 'Shoppingcart' not in session or len(session['Shoppingcart']) <= 0:
+        return redirect(url_for('home'))
+    if request.method =="POST":
+        quantity = request.form.get('quantity')
+        color = request.form.get('color')
+        try:
+            session.modified = True
+            for key, item in session['Shoppingcart'].items():
+                if int(key) == code:
+                    item['quantity'] = quantity
+                    item['color'] = color
+                    flash('Item is updated!', 'success')
+                    return redirect(url_for('getCart'))
+        except Exception as e:
+            print(e)
+            return redirect(url_for('getCart'))
+
+
+@app.route('/deleteitem/<int:id>', methods=['GET', 'POST'])
+def deleteitem(id):
+    if 'Shoppingcart' not in session or len(session['Shoppingcart']) <= 0:
+        return redirect(url_for('home'))
     try:
-        session.clear()
+        session.modified = True
+        for key, item in session['Shoppingcart'].items():
+            if int(key) == id:
+                session['Shoppingcart'].pop(key, None)
+                return redirect(url_for('getCart'))
+
+        return redirect(url_for('home'))
+    except Exception as e:
+        print(e)
+        return redirect(url_for('home'))
+
+
+# @app.route('/empty')
+# def empty_cart():
+#     try:
+#         session.clear()
+#         return redirect(url_for('home'))
+#     except Exception as e:
+#         print(e)
+
+@app.route('/clearcart')
+def clearcart():
+    try:
+        #session.clear()
+        session.pop('Shoppingcart', None)
         return redirect(url_for('home'))
     except Exception as e:
         print(e)

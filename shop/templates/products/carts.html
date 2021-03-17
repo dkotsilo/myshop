@@ -4,6 +4,7 @@
 {% include 'navbar.html' %}
 
 <div class="container mt-4">
+     {% include '_messages.html' %}
     <div class="row">
         <div class="col-md-12">
         <table class="table table-sm">
@@ -27,12 +28,12 @@
                     <td>{{loop.index}}</td>
                     <td><img src="{{url_for('static',filename='images/'+ product.image)}}" alt="{{product.name}}" width="50" height="45"></td>
                     <td>{{product.name}}</td>
-                    <form action="">
+                    <form action="{{url_for('updatecart', code=key)}}" method="post">
                     <td>
                     {% set colors = product.colors.split(',') %}
                     <label for="colors">Colors:</label>
-                  <select name="colors" id="colors">
-                      <option value="{{product.color}}">{{product.color|capitalize}}</option>
+                  <select name="color" id="color">
+                      <option value="{{product.color}}" style="display: none;">{{product.color|capitalize}}</option>
                       {% for color in colors %}
                       {% set col = color.split(':') %}
                      <option value="{{col[0]}}">{{col[0]|capitalize }}</option>
@@ -42,7 +43,7 @@
 
                     </td>
                     <td> $ {{product.price}}</td>
-                    <td><input type="number" name="quantity" min="1" max="{{product.stock}}" value="{{product.quantity}}"></td>
+                    <td><input type="number" name="quantity" min="1" max="10" value="{{product.quantity}}"></td>
                     {% if product.discount > 0 %}
                     <td>{{product.discount}} % is {{discount}} </td>
                     {% else %}
@@ -50,15 +51,18 @@
                     {% endif %}
                     {% set subtotal = product.quantity|int * product.price|float  %}
                     <td> $ {{"%0.2f"| format((subtotal|float) - discount|float)}}</td>
-                    <td><a href="">Update</a></td>
+                    <td><button type="submit" class="btn btn-sm btn-info"> Update</button> </td>
                     </form>
-                    <td><a href="">Remove</a></td>
+                    <td><a href="{{url_for('deleteitem', id=key)}}" class="btn btn-sm btn-danger">Remove </a></td>
             {% endfor %}
+             </table>
+            <table class="table table-sm">
             <tr>
                 <td></td>
-                <td><a href="/"> Continue shopping </a></td>
+                <td><a href="/"> Check out </a></td>
                 <td colspan="3"> <h4>Tax $: {{tax}}</h4></td>
                 <td colspan="4"> <h4>Grand Total $: {{grandtotal}}</h4></td>
+                <td><a href="{{url_for('clearcart')}}" class="btn btn-danger btn-sm float-right"> Clear cart</a></td>
 
             </tr>
                 </tr>
