@@ -26,7 +26,10 @@ def AddCart():
             if 'Shoppingcart' in session:
                 print(session['Shoppingcart'])
                 if product_id in session['Shoppingcart']:
-                    print("This product already in your cart")
+                    for key, item in session['Shoppingcart'].items():
+                        if int(key) == int(product_id):
+                            session.modified = True
+                            item['quantity'] += 1
                 else:
                     session['Shoppingcart'] = MagerDicts(session['Shoppingcart'], DictItems)
                     return redirect(request.referrer)
