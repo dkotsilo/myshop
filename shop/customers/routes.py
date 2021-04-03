@@ -80,4 +80,6 @@ def orders(invoice):
 
     else:
         return redirect(url_for('customerLogin'))
-    return render_template('customer/order.html', invoice=invoice, tax=tax,subTotal=subTotal,grandTotal=grandTotal,customer=customer,orders=orders)
+    return render_template('customer/order.html', invoice=invoice, tax=tax, subTotal=subTotal,
+                           grandTotal=grandTotal, customer=customer, orders=orders)
+
