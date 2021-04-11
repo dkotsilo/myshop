@@ -6,7 +6,8 @@
 <div class="container">
     <div class="row">
 
-
+  {{ dropzone.load_css() }}
+    {{ dropzone.style('border: 2px dashed #0087F7; margin: 10px 0 10px; min-height: 400px; width: 800px') }}
 <div class="col-md-2"></div>
 <div class="col-md-8">
 
@@ -14,7 +15,7 @@
 
     {% from '_formhelpers.html' import render_field %}
 
-    <form method="POST" enctype="multipart/form-data">
+    <form method="POST" action="{{url_for('addproduct')}}" enctype="multipart/form-data">
         {{ render_field(form.name, class="form-control", placeholder="Add product name") }}
         {{ render_field(form.price, class="form-control", placeholder="Add product price") }}
         {{ render_field(form.discount, class="form-control", placeholder="Add product discount") }}
@@ -39,14 +40,15 @@
 
         <div class="container">
             <div class="row">
-                <div class="col-md-4">{{ render_field(form.image_1, class="form-control") }}</div>
-                <div class="col-md-4">{{ render_field(form.image_2, class="form-control") }}</div>
-                <div class="col-md-4">{{ render_field(form.image_3, class="form-control") }}</div>
+                <div class="col-md-4">{{ dropzone.create() }}</div>
+
             </div>
         </div>
 
         <button type="submit" class="btn btn-outline-info mt-4">Add product</button>
     </form>
+{{ dropzone.load_js() }}
+{{ dropzone.config() }}
     </div>
     <div class="col-md-2"></div>
 </div>

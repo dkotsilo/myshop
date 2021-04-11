@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_uploads import UploadSet, configure_uploads, IMAGES, patch_request_class
 import os
-
+from flask_dropzone import Dropzone
 
 from werkzeug.utils import secure_filename
 from werkzeug.datastructures import  FileStorage
@@ -24,6 +24,23 @@ app.config['UPLOADED_PHOTOS_DEST'] = os.path.join(basedir, 'static/images')
 photos = UploadSet('photos', IMAGES)
 configure_uploads(app, photos)
 patch_request_class(app)
+
+
+app.config.update(
+    UPLOADED_PATH=os.path.join(basedir, 'addproduct'),
+    # Flask-Dropzone config:
+    DROPZONE_ALLOWED_FILE_TYPE='image',
+    DROPZONE_MAX_FILE_SIZE=14,
+    DROPZONE_MAX_FILES=30,
+    DROPZONE_IN_FORM=True,
+    DROPZONE_UPLOAD_ON_CLICK=True,
+    DROPZONE_UPLOAD_ACTION='addproduct',  # URL or endpoint
+    DROPZONE_UPLOAD_BTN_ID='submit',
+)
+
+dropzone = Dropzone(app)
+
+
 
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)

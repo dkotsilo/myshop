@@ -156,9 +156,12 @@ def addproduct():
         desc = form.description.data
         brand = request.form.get('brand')
         category = request.form.get('category')
-        image_1 = photos.save(request.files.get('image_1'), name=secrets.token_hex(10) + ".")
-        image_2 = photos.save(request.files.get('image_2'), name=secrets.token_hex(10) + ".")
-        image_3 = photos.save(request.files.get('image_3'), name=secrets.token_hex(10) + ".")
+
+
+
+        # image_1 = photos.save(request.files.get('image_1'), name=secrets.token_hex(10) + ".")
+        # image_2 = photos.save(request.files.get('image_2'), name=secrets.token_hex(10) + ".")
+        # image_3 = photos.save(request.files.get('image_3'), name=secrets.token_hex(10) + ".")
         addproduct = Addproduct(name=name, price=price, discount=discount, stock=stock, colors=colors, desc=desc, category_id=category,
                                 brand_id=brand, image_1=image_1, image_2=image_2, image_3=image_3)
         db.session.add(addproduct)

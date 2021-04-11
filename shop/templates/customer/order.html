@@ -53,7 +53,14 @@
                 <td width="35%"></td>
                 <td colspan="3"> <h4>Tax $: {{tax}}</h4></td>
                 <td colspan="4"> <h4>Grand Total $: {{grandTotal}}</h4></td>
-                <td><a href="#" class="btn btn-danger btn-sm float-right mr-4"> Get PDF </a></td>
+                <td>
+                       <td>
+                    <form action="{{url_for('get_pdf', invoice=orders.invoice)}}" method="post">
+                        <button type="submit" class="btn btn-info"> Get pdf</button>
+                    </form>
+                </td>
+
+                </td>
 
             </tr>
                 </tr>
