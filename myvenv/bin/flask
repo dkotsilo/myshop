@@ -1,4 +1,4 @@
-#!/media/dmitriy/dir29/myshop/myvenv/bin/python
+#!/Users/dima/myshop/myvenv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys
